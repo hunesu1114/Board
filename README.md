@@ -12,7 +12,7 @@ IndividualProject-Board
 
 Dependencies : Spring Web, Thymeleaf, Lombok, MySQL Driver, Spring Data Jpa  
 
-DB : MySQL, MyBatis 
+DB : MySQL, JPA 
 
 API 명세서 : https://docs.google.com/spreadsheets/d/1XDEAT_gSM5RrcfjN1u-BKOKfQXGpwW_MMoGbFotrIaE/edit?usp=sharing  
 
