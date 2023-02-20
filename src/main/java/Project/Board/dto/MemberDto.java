@@ -2,8 +2,12 @@ package Project.Board.dto;
 
 import lombok.Getter;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 @Getter
 public class MemberDto {
+
 
     private Long memberId;
     private String memberName;
