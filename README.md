@@ -10,7 +10,7 @@ IndividualProject-Board
 
 프레임워크 : Spring(Gradle), Spring Boot(2.7.8)  
 
-Dependencies : Spring Web, Lombok, MySQL Driver, MyBatis Framework  
+Dependencies : Spring Web, Thymeleaf, Lombok, MySQL Driver, Spring Data Jpa  
 
 DB : MySQL, MyBatis 
 
