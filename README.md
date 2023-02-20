@@ -12,7 +12,9 @@ IndividualProject-Board
 
 Dependencies : Spring Web, Lombok, MySQL Driver, MyBatis Framework  
 
-DB : MySQL, MyBatis
+DB : MySQL, MyBatis 
+
+API 명세서 : https://docs.google.com/spreadsheets/d/1XDEAT_gSM5RrcfjN1u-BKOKfQXGpwW_MMoGbFotrIaE/edit?usp=sharing  
 
 ====================================================================================    
 
