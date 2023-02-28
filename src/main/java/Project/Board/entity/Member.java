@@ -3,6 +3,8 @@ package Project.Board.entity;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -15,8 +17,8 @@ public class Member {
     private String memberEmail;
     private String password;
 
-    //@OneToMany(mappedBy = "member")
-    private Long post;
+    @OneToMany(mappedBy = "member")
+    private List<Post> posts=new ArrayList<>();
 
 
 }
