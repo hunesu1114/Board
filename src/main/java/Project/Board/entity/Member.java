@@ -1,6 +1,7 @@
 package Project.Board.entity;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -8,17 +9,23 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 public class Member {
 
     @Id @GeneratedValue
     @Column(name="member_id")
     private Long memberId;
-    private String memberName;
+    private String memberName;  //서비스 사용시 이용할 닉네임
     private String memberEmail;
     private String password;
 
     @OneToMany(mappedBy = "member")
     private List<Post> posts=new ArrayList<>();
 
-
+    public Member(String memberName, String memberEmail, String password, List<Post> posts) {
+        this.memberName = memberName;
+        this.memberEmail = memberEmail;
+        this.password = password;
+        this.posts = posts;
+    }
 }
