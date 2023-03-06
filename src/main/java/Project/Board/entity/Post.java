@@ -19,6 +19,8 @@ public class Post {
     @JoinColumn(name="member_id")
     private Member member;
 
+    private String memberName = member.getMemberName();
+
     public Post() {
     }
 

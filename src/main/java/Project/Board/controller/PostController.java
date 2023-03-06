@@ -1,7 +1,10 @@
 package Project.Board.controller;
 
 import Project.Board.dto.PostDto;
+import Project.Board.entity.Member;
 import Project.Board.entity.Post;
+import Project.Board.pagination.Pagination;
+import Project.Board.pagination.PagingConst;
 import Project.Board.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +15,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.annotation.PostConstruct;
+import java.util.List;
+
 @Slf4j
 @Controller
 @RequestMapping("/board")
@@ -19,10 +25,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class PostController {
 
     private final PostService postService;
+    private final PagingConst pConstant;
 
     @GetMapping("/main/{page}")
-    public String mainPage(@PathVariable int page) {
-        //페이징 구현
+    public String mainPage(@PathVariable int page,Model model) {
+        Pagination pagination = new Pagination(postService.postCnt(), page, pConstant.getPOST_CNT_PER_PAGE(), pConstant.getPAGE_CNT_PER_BLOCK());
+        List<Post> posts = postService.findAllPost(pagination);
+        model.addAttribute("pagination", pagination);
+        model.addAttribute("pagesInCurrentBlock", pagination.pagesInCurrentBlock());
+        model.addAttribute("posts", posts);
         return "board/main/{page}";
     }
 
@@ -44,6 +55,7 @@ public class PostController {
     public String addPost(@ModelAttribute("post") PostDto dto, RedirectAttributes redirectAttributes) {
         Post post = postService.savePost(dto);
         redirectAttributes.addAttribute("postId", post.getPostId());
+        redirectAttributes.addAttribute("status", true);
         return "redirect:/board/{postId}";
     }
 
@@ -67,4 +79,12 @@ public class PostController {
 
     //삭제 메서드 구현해야함
 
+    @PostConstruct
+    public void init() {
+        for (int i = 0; i < 53; i++) {
+            Member member = new Member("member" + i, "email" + i, "pw" + i, null);
+            PostDto post = new PostDto(member, "제목" + i, "내용" + i);
+            postService.savePost(post);
+        }
+    }
 }

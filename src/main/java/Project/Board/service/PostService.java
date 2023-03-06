@@ -2,6 +2,7 @@ package Project.Board.service;
 
 import Project.Board.dto.PostDto;
 import Project.Board.entity.Post;
+import Project.Board.pagination.Pagination;
 import Project.Board.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,8 +25,12 @@ public class PostService {
         return postRepository.findById(postId);
     }
 
-    public List<Post> findAllPost() {
-        return postRepository.findAll();
+    public List<Post> findAllPost(Pagination pagination) {
+        return postRepository.pagedFindAll(pagination);
+    }
+
+    public int postCnt() {
+        return postRepository.postCnt();
     }
 
     public void updatePost(Long postId, PostDto updateParam) {
