@@ -9,7 +9,7 @@ public interface PostRepository {
 
     public Post save(PostDto dto);
 
-    public Post findById(Long Id);
+    public Post findById(Long id);
 
     public List<Post> findAll();
 

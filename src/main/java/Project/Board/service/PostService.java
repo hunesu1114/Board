@@ -20,7 +20,7 @@ public class PostService {
         return postRepository.save(dto);
     }
 
-    public Post findOnePost(Long postId) {
+    public Post findPostById(Long postId) {
         return postRepository.findById(postId);
     }
 

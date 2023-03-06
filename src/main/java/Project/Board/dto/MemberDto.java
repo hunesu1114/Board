@@ -12,7 +12,6 @@ import java.util.List;
 public class MemberDto {
 
 
-    private Long memberId;
     private String memberName;  //서비스 사용시 이용할 닉네임
     private String memberEmail;
     private String password;
