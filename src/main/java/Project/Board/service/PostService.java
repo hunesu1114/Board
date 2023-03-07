@@ -1,5 +1,6 @@
 package Project.Board.service;
 
+import Project.Board.dto.MemberDto;
 import Project.Board.dto.PostDto;
 import Project.Board.entity.Post;
 import Project.Board.pagination.Pagination;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service
@@ -40,5 +42,6 @@ public class PostService {
     public void deletePost(Long postId) {
         postRepository.delete(postId);
     }
+
 
 }

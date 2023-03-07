@@ -23,8 +23,8 @@
     <form action="add.html" th:action th:object="${post}" method="post">
         <div class="col-md-6 offset-md-2">
             <div>
-                <label for="memberName">작성자: </label>
-                <input type="text" id="memberName" th:field="*{memberName}" th:errorclass="field-error">
+                <label for="author">작성자: </label>
+                <input type="text" id="author" th:field="*{author}" th:errorclass="field-error">
 
                 <div class="field-error" th:errors="*{author}">
                     작성자 오류

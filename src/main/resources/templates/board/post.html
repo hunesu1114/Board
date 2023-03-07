@@ -14,8 +14,8 @@
 
     <form action="post.html" th:action th:object="${post}" method="post">
         <div class="col-md-6 offset-md-2">
-            <label for="memberName">작성자: </label>
-            <input type="text" id="memberName" th:field="*{memberName}" readonly>
+            <label for="author">작성자: </label>
+            <input type="text" id="author" th:field="*{author}" readonly>
             <br>
             <label for="title">제목  : </label>
             <textarea id="title" th:field="*{title}" rows="1" cols="70" readonly></textarea>

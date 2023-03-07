@@ -5,22 +5,25 @@ import lombok.Getter;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 public class MemberDto {
 
-
+    @NotBlank
     private String memberName;  //서비스 사용시 이용할 닉네임
-    private String memberEmail;
-    private String password;
-    private List<Post> posts;
 
-    public MemberDto(String memberName, String memberEmail, String password,List<Post> posts) {
+    @NotBlank
+    private String memberEmail;
+
+    @NotBlank
+    private String password;
+
+    public MemberDto(String memberName, String memberEmail, String password) {
         this.memberName = memberName;
         this.memberEmail = memberEmail;
         this.password = password;
-        this.posts = posts;
     }
 }

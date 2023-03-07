@@ -10,23 +10,23 @@ import javax.persistence.*;
 @Setter
 public class Post {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
+    private String author;
     private String title;
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    /*@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")
-    private Member member;
+    private Member member;*/
 
-    private String memberName = member.getMemberName();
 
     public Post() {
     }
 
-    public Post(Member member, String title, String content) {
+    public Post(String author, String title, String content) {
+        this.author = author;
         this.title = title;
         this.content = content;
-        this.member = member;
     }
 }

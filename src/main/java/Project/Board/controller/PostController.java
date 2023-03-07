@@ -34,7 +34,7 @@ public class PostController {
         model.addAttribute("pagination", pagination);
         model.addAttribute("pagesInCurrentBlock", pagination.pagesInCurrentBlock());
         model.addAttribute("posts", posts);
-        return "board/main/{page}";
+        return "/board/main";
     }
 
     @GetMapping("/{postId}")

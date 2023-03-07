@@ -9,17 +9,18 @@ import javax.validation.constraints.NotBlank;
 public class PostDto {
 
     @NotBlank
+    private String author;
+
+    @NotBlank
     private String title;
 
     @NotBlank
     private String content;
 
-    @NotBlank
-    private Member member;
 
-    public PostDto(Member member, String title, String content) {
+    public PostDto(String author, String title, String content) {
+        this.author = author;
         this.title = title;
         this.content = content;
-        this.member = member;
     }
 }
