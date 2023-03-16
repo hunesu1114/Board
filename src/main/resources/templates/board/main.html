@@ -43,6 +43,12 @@
                         <li class="page-item"><a class="page-link" th:href="@{/board/main/{page} (page=${pagination.endPage}+1)}">Next</a></li>
                     </ul>
                 </nav>
+
+                <div>
+                    <button class="btn btn-primary" type="bitton" th:onclick="|location.href='@{/board/addPost}'|">글쓰기</button>     <!--리터럴 대체-->
+                    <button class="btn btn-primary " type="button" onclick="location.href='main.html'"
+                            th:onclick="|location.href='@{/}'|">메인으로</button>
+                </div>
             </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     </body>

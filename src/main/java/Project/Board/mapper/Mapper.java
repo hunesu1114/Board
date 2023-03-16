@@ -22,12 +22,12 @@ public class Mapper {
     }
 
     public Member memberDtoToEntity(MemberDto dto) {
-        return new Member(dto.getMemberName(), dto.getMemberEmail(), dto.getPassword());
+        return new Member(dto.getNickName(), dto.getMemberEmail(), dto.getPassword());
     }
 
     public Member memberUpdate(Member member, MemberDto updateParam) {
         //이메일, 패스워드 바뀌지않음
-        member.setMemberName(updateParam.getMemberName());
+        member.setNickName(updateParam.getNickName());
         return member;
     }
 }

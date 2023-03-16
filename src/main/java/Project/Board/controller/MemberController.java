@@ -25,7 +25,7 @@ public class MemberController {
 
     @GetMapping("/register")
     public String register(Model model) {
-        Member member = new Member();
+        MemberDto member = new MemberDto();
         model.addAttribute("member", member);
         return "member/register";
     }

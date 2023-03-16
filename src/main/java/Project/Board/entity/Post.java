@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -15,6 +16,7 @@ public class Post {
     private String author;
     private String title;
     private String content;
+//    private LocalDateTime localDateTime;  //작성일자 추가하기
 
     /*@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")
@@ -28,5 +30,6 @@ public class Post {
         this.author = author;
         this.title = title;
         this.content = content;
+
     }
 }
