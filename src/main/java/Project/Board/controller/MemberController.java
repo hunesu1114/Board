@@ -2,6 +2,7 @@ package Project.Board.controller;
 
 import Project.Board.dto.MemberDto;
 import Project.Board.entity.Member;
+import Project.Board.login.session.SessionConst;
 import Project.Board.service.MemberService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.security.PermitAll;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Slf4j
 @Controller
@@ -30,9 +33,20 @@ public class MemberController {
         return "member/register";
     }
 
-    @PostMapping("/register")
-    public String register(@ModelAttribute("member") MemberDto dto, RedirectAttributes redirectAttributes) {
+    @PostMapping("/register")   //회원가입 후 로그인처리까지
+    public String register(@Validated @ModelAttribute("member") MemberDto dto, BindingResult bindingResult,
+                           HttpServletRequest request,RedirectAttributes redirectAttributes) {
         Member member = memberService.saveMember(dto);
+        log.info("========회원가입 완료========");
+        log.info("========로그인 처리 합니다========");
+        HttpSession session = request.getSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+
+        log.info("================================");
+        session.getAttributeNames().asIterator()
+                .forEachRemaining(name -> log.info("session-name={}, value={}",name,session.getAttribute(name)));
+        log.info("================================");
+
         redirectAttributes.addAttribute("memberId", member.getMemberId());
         return "redirect:/member/individual/{memberId}";
     }
@@ -45,10 +59,14 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public String login(@Validated @ModelAttribute("member") MemberDto memberDto, BindingResult bindingResult) {
+    public String login(@Validated @ModelAttribute("member") MemberDto member, BindingResult bindingResult,
+                        HttpServletRequest request, @RequestParam(defaultValue = "/") String redirectURI,
+                        RedirectAttributes redirectAttributes) {
+
         if (bindingResult.hasErrors()) {
             return "member/login";
         }
+
         //로그인 로직 구현 (세션)
 
         return "/member/individual/{memberId}";

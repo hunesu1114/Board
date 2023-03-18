@@ -10,6 +10,8 @@ public interface MemberRepository {
 
     public Member findById(Long id);
 
+    public Member findByLoginId(String LoginId);
+
     public List<Member> findAll();
 
     public void update(Long id, MemberDto updateParam);

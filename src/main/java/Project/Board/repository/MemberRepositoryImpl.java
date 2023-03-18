@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -27,6 +29,14 @@ public class MemberRepositoryImpl implements MemberRepository {
     public Member findById(Long id) {
         Member findMember = em.find(Member.class, id);
         return findMember;
+    }
+
+    @Override
+    public Member findByLoginId(String loginId) {
+        return em.createQuery("select m from Member m where m.login_id=:loginId", Member.class)
+                .setParameter("loginId", loginId)
+                .getResultList()
+                .get(0);
     }
 
     @Override
