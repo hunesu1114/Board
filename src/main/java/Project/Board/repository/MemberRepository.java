@@ -10,11 +10,11 @@ public interface MemberRepository {
 
     public Member findById(Long id);
 
-    public Member findByLoginId(String LoginId);
+    public Member findByEmail(String email);
 
     public List<Member> findAll();
 
-    public void update(Long id, MemberDto updateParam);
+    public Member update(Long id, MemberDto updateParam);
 
     public void delete(Long id);
 

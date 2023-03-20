@@ -27,27 +27,32 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("/register")
-    public String register(Model model) {
-        MemberDto member = new MemberDto();
-        model.addAttribute("member", member);
+    public String register(@ModelAttribute("memberDto") MemberDto memberDto) {
         return "member/register";
     }
 
-    @PostMapping("/register")   //회원가입 후 로그인처리까지
-    public String register(@Validated @ModelAttribute("member") MemberDto dto, BindingResult bindingResult,
+    @PostMapping("/register")   //데이터를 받았는데 왜 null값 나옴?
+    public String register(@Validated @ModelAttribute("memberDto") MemberDto memberDto, BindingResult bindingResult,
                            HttpServletRequest request,RedirectAttributes redirectAttributes) {
-        Member member = memberService.saveMember(dto);
+        /*if (bindingResult.hasErrors()) {
+            log.info("========회원가입 오류========");
+            return "member/register";
+        }*/
+
+        Member registerMember = memberService.saveMember(memberDto);
         log.info("========회원가입 완료========");
         log.info("========로그인 처리 합니다========");
         HttpSession session = request.getSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, registerMember);
 
-        log.info("================================");
         session.getAttributeNames().asIterator()
                 .forEachRemaining(name -> log.info("session-name={}, value={}",name,session.getAttribute(name)));
+
+        log.info("Email={}, nickName={}, password={}", registerMember.getMemberEmail(), registerMember.getNickName(), registerMember.getPassword());
         log.info("================================");
 
-        redirectAttributes.addAttribute("memberId", member.getMemberId());
+        redirectAttributes.addAttribute("memberId", registerMember.getMemberId());
+//        redirectAttributes.addAttribute("registerStatus", true);
         return "redirect:/member/individual/{memberId}";
     }
 
@@ -55,7 +60,7 @@ public class MemberController {
     public String login(Model model) {
         Member member = new Member();
         model.addAttribute("member", member);
-        return "/member/login";
+        return "member/login";
     }
 
     @PostMapping("/login")
@@ -63,13 +68,27 @@ public class MemberController {
                         HttpServletRequest request, @RequestParam(defaultValue = "/") String redirectURI,
                         RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
+        /*if (bindingResult.hasErrors()) {
             return "member/login";
+        }*/
+        Member loginMember = memberService.login(member.getMemberEmail(), member.getPassword());
+        HttpSession session = request.getSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER,loginMember);
+
+        if (redirectURI == null) {
+            redirectAttributes.addAttribute("memberId", loginMember.getMemberId());
+            return "redirect:/member/individual/{memberId}";
         }
 
-        //로그인 로직 구현 (세션)
+        return "redirect:"+redirectURI;
 
-        return "/member/individual/{memberId}";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.invalidate();
+        return "/";
     }
 
     @GetMapping("/individual/{memberId}")
@@ -87,11 +106,14 @@ public class MemberController {
     }
 
     @PostMapping("/individual/{memberId}/edit")
-    public String edit(@PathVariable Long memberId, @Validated @ModelAttribute("member") MemberDto updateParam, BindingResult bindingResult) {
+    public String edit(@PathVariable Long memberId, @Validated @ModelAttribute("member") MemberDto updateParam,
+                       RedirectAttributes redirectAttributes,BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             log.info("수정페이지 오류발생 : {}", bindingResult);
         }
-        memberService.updateMember(memberId, updateParam);
+        Member member = memberService.updateMember(memberId, updateParam);
+
+        redirectAttributes.addAttribute("memberId", member.getMemberId());
         return "/member/individual/{memberId}";
     }
 }

@@ -32,9 +32,9 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public Member findByLoginId(String loginId) {
-        return em.createQuery("select m from Member m where m.login_id=:loginId", Member.class)
-                .setParameter("loginId", loginId)
+    public Member findByEmail(String memberEmail) {
+        return em.createQuery("select m from Member m where m.memberEmail=:memberEmail", Member.class)
+                .setParameter("memberEmail", memberEmail)
                 .getResultList()
                 .get(0);
     }
@@ -45,8 +45,10 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public void update(Long id, MemberDto updateParam) {
-        mapper.memberUpdate(findById(id), updateParam);
+    public Member update(Long id, MemberDto updateParam) {
+        Member member = em.find(Member.class, id);
+        member.setNickName(updateParam.getNickName());
+        return member;
     }
 
     @Override

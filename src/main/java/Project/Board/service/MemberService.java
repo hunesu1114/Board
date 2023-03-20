@@ -26,8 +26,8 @@ public class MemberService {
         return memberRepository.findById(memberId);
     }
 
-    public Member login(String loginId, String pw) {
-        Member loginMember = memberRepository.findByLoginId(loginId);
+    public Member login(String memberEmail, String pw) {
+        Member loginMember = memberRepository.findByEmail(memberEmail);
         if (loginMember == null) {
             return null;
         }
@@ -41,8 +41,8 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
-    public void updateMember(Long memberId, MemberDto updateParam) {
-        memberRepository.update(memberId, updateParam);
+    public Member updateMember(Long memberId, MemberDto updateParam) {
+        return memberRepository.update(memberId, updateParam);
     }
 
     public void deleteMember(Long memberId) {
