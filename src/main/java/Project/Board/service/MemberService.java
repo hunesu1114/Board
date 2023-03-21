@@ -28,13 +28,11 @@ public class MemberService {
 
     public Member login(String memberEmail, String pw) {
         Member loginMember = memberRepository.findByEmail(memberEmail);
-        if (loginMember == null) {
+        if (loginMember.getMemberEmail().equals(memberEmail) && loginMember.getPassword().equals(pw)) {
+            return loginMember;
+        } else {
             return null;
         }
-        if (!loginMember.getPassword().equals(pw)) {
-            return null;
-        }
-        return loginMember;
     }
 
     public List<Member> findAll() {

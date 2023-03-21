@@ -1,8 +1,10 @@
 package Project.Board.controller;
 
+import Project.Board.dto.LoginDto;
 import Project.Board.dto.MemberDto;
 import Project.Board.entity.Member;
 import Project.Board.login.session.SessionConst;
+import Project.Board.login.web.Login;
 import Project.Board.service.MemberService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -58,24 +60,30 @@ public class MemberController {
 
     @GetMapping("/login")
     public String login(Model model) {
-        Member member = new Member();
+        LoginDto member = new LoginDto();
         model.addAttribute("member", member);
         return "member/login";
     }
 
     @PostMapping("/login")
-    public String login(@Validated @ModelAttribute("member") MemberDto member, BindingResult bindingResult,
+    /**
+     * 로그인DTO 만들어 써야함
+     * 멤버DTO로 하면 닉네임 바인딩 -> null -> 오류 생김
+     * 멤버DTO쓸거면 @NotBlank 주석처리하면 되긴 함
+     */
+    public String login(@Validated @ModelAttribute("member") LoginDto member, BindingResult bindingResult,
                         HttpServletRequest request, @RequestParam(defaultValue = "/") String redirectURI,
                         RedirectAttributes redirectAttributes) {
 
-        /*if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             return "member/login";
-        }*/
+        }
+
         Member loginMember = memberService.login(member.getMemberEmail(), member.getPassword());
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER,loginMember);
 
-        if (redirectURI == null) {
+        if (redirectURI == "/") {
             redirectAttributes.addAttribute("memberId", loginMember.getMemberId());
             return "redirect:/member/individual/{memberId}";
         }
@@ -88,7 +96,8 @@ public class MemberController {
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.invalidate();
-        return "/";
+        log.info("========로그아웃 되었습니다=========");
+        return "redirect:/";
     }
 
     @GetMapping("/individual/{memberId}")
@@ -100,20 +109,20 @@ public class MemberController {
 
     @GetMapping("/individual/{memberId}/edit")
     public String edit(@PathVariable Long memberId, Model model) {
-        Member findMember = memberService.findMemberById(memberId);
-        model.addAttribute("member", memberId);
+        Member member = memberService.findMemberById(memberId);
+        model.addAttribute("member", member);
         return "member/edit";
     }
 
     @PostMapping("/individual/{memberId}/edit")
     public String edit(@PathVariable Long memberId, @Validated @ModelAttribute("member") MemberDto updateParam,
-                       RedirectAttributes redirectAttributes,BindingResult bindingResult) {
+                       BindingResult bindingResult,RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             log.info("수정페이지 오류발생 : {}", bindingResult);
         }
         Member member = memberService.updateMember(memberId, updateParam);
-
         redirectAttributes.addAttribute("memberId", member.getMemberId());
-        return "/member/individual/{memberId}";
+
+        return "redirect:/member/individual/{memberId}";
     }
 }

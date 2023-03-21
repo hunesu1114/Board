@@ -3,6 +3,7 @@ package Project.Board.controller;
 import Project.Board.dto.PostDto;
 import Project.Board.entity.Member;
 import Project.Board.entity.Post;
+import Project.Board.login.session.SessionConst;
 import Project.Board.pagination.Pagination;
 import Project.Board.pagination.PagingConst;
 import Project.Board.service.PostService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Slf4j
@@ -28,7 +30,7 @@ public class PostController {
     private final PagingConst pConstant;
 
     @GetMapping("/main/{page}")
-    public String mainPage(@PathVariable int page,Model model) {
+    public String mainPage(@PathVariable int page, Model model, HttpServletRequest request) {
         Pagination pagination = new Pagination(postService.postCnt(), page, pConstant.getPOST_CNT_PER_PAGE(), pConstant.getPAGE_CNT_PER_BLOCK());
         List<Post> posts = postService.findAllPost(pagination);
         model.addAttribute("pagination", pagination);
