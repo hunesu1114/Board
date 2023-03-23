@@ -24,7 +24,7 @@
     <form action="individual.html" th:action method="post" th:object="${member}">
         <div class="col-md-6 offset-md-2">
             <label for="memberEmail">이메일: </label>
-            <input type="text" id="memberEmail" th:field="*{memberEmail}" th:errorclass="field-error" readonly>
+            <input type="text" id="memberEmail" th:field="*{memberEmail}" th:errorclass="field-error" readonly> <!--readonly 는 submit 날릴수있음-->
             <div class="field-error" th:errors="*{memberEmail}">
                 이메일 오류
             </div>
@@ -44,8 +44,7 @@
             </div>
             <br>
 
-            <button class="btn btn-info" type="submit"
-                    th:onclick="|location.href='@{/member/individual/{memberId}/edit (memberId=*{memberId})}'|">
+            <button class="btn btn-info" type="submit">
                 수정 내용 저장
             </button>
 

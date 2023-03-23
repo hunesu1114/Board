@@ -25,4 +25,9 @@ public class Mapper {
         return new Member(dto.getNickName(), dto.getMemberEmail(), dto.getPassword());
     }
 
+    public MemberDto memberEntityToDto(Member member) {
+        return new MemberDto(member.getNickName(), member.getMemberEmail(), member.getPassword());
+
+    }
+
 }

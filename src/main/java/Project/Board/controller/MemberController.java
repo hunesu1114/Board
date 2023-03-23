@@ -5,6 +5,7 @@ import Project.Board.dto.MemberDto;
 import Project.Board.entity.Member;
 import Project.Board.login.session.SessionConst;
 import Project.Board.login.web.Login;
+import Project.Board.mapper.Mapper;
 import Project.Board.service.MemberService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -27,19 +28,22 @@ import javax.servlet.http.HttpSession;
 public class MemberController {
 
     private final MemberService memberService;
+    private final Mapper mapper;
 
     @GetMapping("/register")
-    public String register(@ModelAttribute("memberDto") MemberDto memberDto) {
+    public String register(Model model) {
+        MemberDto memberDto = new MemberDto();
+        model.addAttribute("memberDto", memberDto);
         return "member/register";
     }
 
     @PostMapping("/register")   //데이터를 받았는데 왜 null값 나옴?
     public String register(@Validated @ModelAttribute("memberDto") MemberDto memberDto, BindingResult bindingResult,
                            HttpServletRequest request,RedirectAttributes redirectAttributes) {
-        /*if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             log.info("========회원가입 오류========");
             return "member/register";
-        }*/
+        }
 
         Member registerMember = memberService.saveMember(memberDto);
         log.info("========회원가입 완료========");
@@ -71,7 +75,7 @@ public class MemberController {
      * 멤버DTO로 하면 닉네임 바인딩 -> null -> 오류 생김
      * 멤버DTO쓸거면 @NotBlank 주석처리하면 되긴 함
      */
-    public String login(@Validated @ModelAttribute("member") LoginDto member, BindingResult bindingResult,
+    public String login(@Validated @ModelAttribute("member") LoginDto loginMemberDto, BindingResult bindingResult,
                         HttpServletRequest request, @RequestParam(defaultValue = "/") String redirectURI,
                         RedirectAttributes redirectAttributes) {
 
@@ -79,7 +83,7 @@ public class MemberController {
             return "member/login";
         }
 
-        Member loginMember = memberService.login(member.getMemberEmail(), member.getPassword());
+        Member loginMember = memberService.login(loginMemberDto.getMemberEmail(), loginMemberDto.getPassword());
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER,loginMember);
 
@@ -110,7 +114,8 @@ public class MemberController {
     @GetMapping("/individual/{memberId}/edit")
     public String edit(@PathVariable Long memberId, Model model) {
         Member member = memberService.findMemberById(memberId);
-        model.addAttribute("member", member);
+        MemberDto memberDto = mapper.memberEntityToDto(member);
+        model.addAttribute("member", memberDto);
         return "member/edit";
     }
 
