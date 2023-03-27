@@ -27,12 +27,12 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
-    private final PagingConst pConstant;
 
     @GetMapping("/main/{page}")
-    public String mainPage(@PathVariable int page, Model model, HttpServletRequest request) {
-        Pagination pagination = new Pagination(postService.postCnt(), page, pConstant.getPOST_CNT_PER_PAGE(), pConstant.getPAGE_CNT_PER_BLOCK());
-        List<Post> posts = postService.findAllPost(pagination);
+    public String mainPage(@PathVariable int page, Model model) {
+        Pagination pagination = new Pagination(postService.postCnt(), page);
+        List<Post> posts = postService.findAllPost(page);
+
         model.addAttribute("pagination", pagination);
         model.addAttribute("pagesInCurrentBlock", pagination.pagesInCurrentBlock());
         model.addAttribute("posts", posts);

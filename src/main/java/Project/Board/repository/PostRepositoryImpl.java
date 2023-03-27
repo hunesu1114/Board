@@ -4,6 +4,7 @@ import Project.Board.dto.PostDto;
 import Project.Board.entity.Post;
 import Project.Board.mapper.Mapper;
 import Project.Board.pagination.Pagination;
+import Project.Board.pagination.PagingConst;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -31,10 +32,10 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public List<Post> pagedFindAll(Pagination pagination) {
+    public List<Post> pagedFindAll(int page) {
         return em.createQuery("select p from Post p order by p.postId asc", Post.class)
-                .setFirstResult(pagination.limitStart)
-                .setMaxResults(pagination.postCntPerPage)
+                .setFirstResult(PagingConst.POST_CNT_PER_PAGE*(page-1))
+                .setMaxResults(PagingConst.POST_CNT_PER_PAGE)
                 .getResultList();
     }
 

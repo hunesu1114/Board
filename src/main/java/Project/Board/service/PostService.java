@@ -27,8 +27,8 @@ public class PostService {
         return postRepository.findById(postId);
     }
 
-    public List<Post> findAllPost(Pagination pagination) {
-        return postRepository.pagedFindAll(pagination);
+    public List<Post> findAllPost(int page) {
+        return postRepository.pagedFindAll(page);
     }
 
     public int postCnt() {

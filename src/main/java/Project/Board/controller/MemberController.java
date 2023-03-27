@@ -4,10 +4,8 @@ import Project.Board.dto.LoginDto;
 import Project.Board.dto.MemberDto;
 import Project.Board.entity.Member;
 import Project.Board.login.session.SessionConst;
-import Project.Board.login.web.Login;
 import Project.Board.mapper.Mapper;
 import Project.Board.service.MemberService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -16,10 +14,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Slf4j
 @Controller
@@ -32,14 +29,14 @@ public class MemberController {
 
     @GetMapping("/register")
     public String register(Model model) {
-        MemberDto memberDto = new MemberDto();
-        model.addAttribute("memberDto", memberDto);
+        MemberDto memberDto = new MemberDto("aaa","aaa","aaa");
+        model.addAttribute("member", memberDto);
         return "member/register";
     }
 
-    @PostMapping("/register")   //데이터를 받았는데 왜 null값 나옴?
-    public String register(@Validated @ModelAttribute("memberDto") MemberDto memberDto, BindingResult bindingResult,
-                           HttpServletRequest request,RedirectAttributes redirectAttributes) {
+    @PostMapping("/register")
+    public String register(@Valid @ModelAttribute("member") MemberDto memberDto, BindingResult bindingResult,
+                           HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             log.info("========회원가입 오류========");
             return "member/register";
@@ -87,6 +84,8 @@ public class MemberController {
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER,loginMember);
 
+        log.info("========로그인 성공=========");
+
         if (redirectURI == "/") {
             redirectAttributes.addAttribute("memberId", loginMember.getMemberId());
             return "redirect:/member/individual/{memberId}";
@@ -120,13 +119,15 @@ public class MemberController {
     }
 
     @PostMapping("/individual/{memberId}/edit")
-    public String edit(@PathVariable Long memberId, @Validated @ModelAttribute("member") MemberDto updateParam,
-                       BindingResult bindingResult,RedirectAttributes redirectAttributes) {
+    /**
+     * 문제있음
+     */
+    public String edit(@PathVariable Long memberId, @Valid @ModelAttribute("member") MemberDto updateParam,
+                       BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             log.info("수정페이지 오류발생 : {}", bindingResult);
         }
-        Member member = memberService.updateMember(memberId, updateParam);
-        redirectAttributes.addAttribute("memberId", member.getMemberId());
+        memberService.updateMember(memberId, updateParam);
 
         return "redirect:/member/individual/{memberId}";
     }

@@ -12,7 +12,7 @@ public interface PostRepository {
 
     public Post findById(Long id);
 
-    public List<Post> pagedFindAll(Pagination pagination);
+    public List<Post> pagedFindAll(int page);
 
     public int postCnt();
 

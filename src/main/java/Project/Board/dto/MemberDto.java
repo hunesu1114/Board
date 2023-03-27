@@ -1,13 +1,6 @@
 package Project.Board.dto;
-
-import Project.Board.entity.Post;
 import lombok.Getter;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 public class MemberDto {

@@ -17,7 +17,7 @@
 <body>
 <div class="container">
 
-<form action="register.html" th:action="@{/member/register}" method="post" th:object="${memberDto}">
+<form action="/member/register" th:action method="post" th:object="${member}">
     <div class="col-md-6 offset-md-2">
         <label for="memberEmail">이메일: </label>
         <input type="text" id="memberEmail" th:field="*{memberEmail}" th:errorclass="field-error">

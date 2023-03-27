@@ -14,22 +14,20 @@ public class Pagination {
     public static int currentPage;
     public int totalPostCount;
     public int totalPageCount;
-    public int postCntPerPage;
-    public int pageCntPerBlock;
+    public int postCntPerPage=PagingConst.POST_CNT_PER_PAGE;
+    public int pageCntPerBlock=PagingConst.PAGE_CNT_PER_BLOCK;
     public int startPage;
     public int endPage;
     public int limitStart;
-    public boolean existPrePage;
-    public boolean existNextPage;
+    public int prePageStartPage;
+    public int nextPageStartPage;
 
 
-    public Pagination(int totalPostCount, int currentPage, int postCntPerPage, int pageCntPerBlock) {
+    public Pagination(int totalPostCount, int currentPage) {
         if (totalPostCount > 0) {
             this.totalPostCount = totalPostCount;
         }
         this.currentPage = currentPage;
-        this.postCntPerPage = postCntPerPage;
-        this.pageCntPerBlock = pageCntPerBlock;
         calculation();
     }
 
@@ -43,19 +41,10 @@ public class Pagination {
 
         limitStart = (currentPage - 1) * postCntPerPage;
 
-        existPrePage = (startPage != 1);
+        prePageStartPage=(startPage==1)?1:startPage-5;
 
-        existNextPage = (endPage * postCntPerPage) < totalPostCount;
+        nextPageStartPage = (endPage == totalPageCount) ? endPage : endPage + 1;
 
-    }
-
-
-    public List<Integer> pagesToList() {
-        List<Integer> list = new ArrayList<>();
-        for (int i = 1; i <= totalPageCount; i++) {
-            list.add(i);
-        }
-        return list;
     }
 
     public List<Integer> pagesInCurrentBlock() {
