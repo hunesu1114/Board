@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 @Slf4j
 @Controller
@@ -29,33 +28,29 @@ public class MemberController {
 
     @GetMapping("/register")
     public String register(Model model) {
-        MemberDto memberDto = new MemberDto();
-        model.addAttribute("member", memberDto);
+        MemberDto member = new MemberDto();
+        model.addAttribute("member", member);
         return "member/register";
     }
 
     @PostMapping("/register")
-    public String register(@Valid @ModelAttribute("member") MemberDto memberDto, BindingResult bindingResult,
+    public String register(@Validated @ModelAttribute("member") MemberDto member, BindingResult bindingResult,
                            HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             log.info("========회원가입 오류========");
             return "member/register";
         }
 
-        Member registerMember = memberService.saveMember(memberDto);
+        Member registerMember = memberService.saveMember(member);
+//        redirectAttributes.addAttribute("registerStatus", true);
         log.info("========회원가입 완료========");
+
         log.info("========로그인 처리 합니다========");
-        HttpSession session = request.getSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, registerMember);
-
-        session.getAttributeNames().asIterator()
-                .forEachRemaining(name -> log.info("session-name={}, value={}",name,session.getAttribute(name)));
-
-        log.info("Email={}, nickName={}, password={}", registerMember.getMemberEmail(), registerMember.getNickName(), registerMember.getPassword());
-        log.info("================================");
+        memberService.loginViaSession(request, registerMember);
+//        redirectAttributes.addAttribute("loginStatus", true);
+        log.info("========로그인 성공=========");
 
         redirectAttributes.addAttribute("memberId", registerMember.getMemberId());
-        redirectAttributes.addAttribute("registerStatus", true);
         return "redirect:/member/individual/{memberId}";
     }
 
@@ -80,7 +75,7 @@ public class MemberController {
             return "member/login";
         }
 
-        Member loginMember = memberService.login(loginMemberDto.getMemberEmail(), loginMemberDto.getPassword());
+        Member loginMember = memberService.loginValidation(loginMemberDto.getMemberEmail(), loginMemberDto.getPassword());
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER,loginMember);
 
@@ -121,10 +116,7 @@ public class MemberController {
     }
 
     @PostMapping("/individual/{memberId}/edit")
-    /**
-     * 문제있음
-     */
-    public String edit(@PathVariable Long memberId, @Valid @ModelAttribute("member") MemberDto updateParam,
+    public String edit(@PathVariable Long memberId, @Validated @ModelAttribute("member") MemberDto updateParam,
                        BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             log.info("수정페이지 오류발생 : {}", bindingResult);

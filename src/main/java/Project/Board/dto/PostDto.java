@@ -1,6 +1,5 @@
 package Project.Board.dto;
 
-import Project.Board.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
 

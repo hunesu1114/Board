@@ -26,11 +26,11 @@ public class Mapper {
     }
 
     public Member memberDtoToEntity(MemberDto dto) {
-        return new Member(dto.getNickName(), dto.getMemberEmail(), dto.getPassword());
+        return new Member(dto.getMemberEmail(), dto.getNickName(), dto.getPassword());
     }
 
     public MemberDto memberEntityToDto(Member member) {
-        return new MemberDto(member.getNickName(), member.getMemberEmail(), member.getPassword());
+        return new MemberDto(member.getMemberEmail(), member.getNickName(), member.getPassword());
 
     }
 

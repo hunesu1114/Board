@@ -63,7 +63,8 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public void initSave(Member member) {
+    public Member initSave(Member member) {
         em.persist(member);
+        return member;
     }
 }

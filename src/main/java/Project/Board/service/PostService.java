@@ -50,6 +50,7 @@ public class PostService {
     public Boolean isAuthor(Post post, HttpServletRequest request) {
         return (post.getMember().getMemberId()==getMemberFromSession(request).getMemberId());
     }
+
     public Member getMemberFromSession(HttpServletRequest request) {
         HttpSession session = request.getSession();
         return (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);

@@ -25,9 +25,9 @@ public class Member {
     public Member() {
     }
 
-    public Member(String nickName, String memberEmail, String password) {
-        this.nickName = nickName;
+    public Member(String memberEmail, String nickName, String password) {
         this.memberEmail = memberEmail;
+        this.nickName = nickName;
         this.password = password;
     }
 }

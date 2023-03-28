@@ -3,12 +3,15 @@ package Project.Board.service;
 import Project.Board.dto.MemberDto;
 import Project.Board.dto.PostDto;
 import Project.Board.entity.Member;
+import Project.Board.login.session.SessionConst;
 import Project.Board.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Service
@@ -26,7 +29,7 @@ public class MemberService {
         return memberRepository.findById(memberId);
     }
 
-    public Member login(String memberEmail, String pw) {
+    public Member loginValidation(String memberEmail, String pw) {
         Member loginMember = memberRepository.findByEmail(memberEmail);
         if (loginMember.getMemberEmail().equals(memberEmail) && loginMember.getPassword().equals(pw)) {
             return loginMember;
@@ -35,17 +38,17 @@ public class MemberService {
         }
     }
 
-    public List<Member> findAll() {
-        return memberRepository.findAll();
-    }
-
     public Member updateMember(Long memberId, MemberDto updateParam) {
         return memberRepository.update(memberId, updateParam);
     }
 
-    public void deleteMember(Long memberId) {
-        memberRepository.delete(memberId);
+    public Member loginViaSession(HttpServletRequest request,Member member) {
+        HttpSession session = request.getSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+        return (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
     }
 
-
+    public Member testSave(Member member) {
+        return memberRepository.initSave(member);
+    }
 }

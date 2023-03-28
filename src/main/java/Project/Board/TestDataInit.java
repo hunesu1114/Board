@@ -30,7 +30,7 @@ public class TestDataInit {
     public void init() {
         log.info("실행=====================================================");
         for (int i = 1; i < 54; i++) {
-            Member member = new Member("member" + i, "email" + i, "pw" + i);
+            Member member = new Member("email" + i, "nick" + i, "pw" + i);
             memberRepository.initSave(member);
             Post post = new Post("제목"+i, "내용" + i, member);
             postRepository.initSave(post);

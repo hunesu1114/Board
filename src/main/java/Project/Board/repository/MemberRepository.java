@@ -18,6 +18,6 @@ public interface MemberRepository {
 
     public void delete(Long id);
 
-    public void initSave(Member member);
+    public Member initSave(Member member);
 
 }
