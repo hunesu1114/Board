@@ -77,7 +77,7 @@ public class MemberController {
 
         Member loginMember = memberService.loginValidation(loginMemberDto.getMemberEmail(), loginMemberDto.getPassword());
         HttpSession session = request.getSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER,loginMember);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 
         log.info("========로그인 성공=========");
 
@@ -88,7 +88,7 @@ public class MemberController {
             return "redirect:/member/individual/{memberId}";
         }
 
-        return "redirect:"+redirectURI;
+        return "redirect:" + redirectURI;
 
     }
 
@@ -124,5 +124,12 @@ public class MemberController {
         memberService.updateMember(memberId, updateParam);
 
         return "redirect:/member/individual/{memberId}";
+    }
+
+    @GetMapping("/individual/{memberId}/delete")
+    public String delete(@PathVariable Long memberId,HttpServletRequest request) {
+        memberService.deleteMember(memberId);
+        request.getSession().invalidate();
+        return "member/delete";
     }
 }

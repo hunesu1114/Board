@@ -22,10 +22,10 @@
 
     <form action="add.html" th:action th:object="${post}" method="post">
             <div>
-                <label for="author">작성자: </label>
-                <input type="text" id="author" th:field="*{author}" th:errorclass="field-error">
+                <label for="nickName">작성자: </label>
+                <input type="text" id="nickName" th:field="*{nickName}" th:errorclass="field-error">
 
-                <div class="field-error" th:errors="*{author}">
+                <div class="field-error" th:errors="*{nickName}">
                     작성자 오류
                 </div>
             </div>

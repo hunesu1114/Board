@@ -41,7 +41,7 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public String post(@PathVariable Long postId,HttpServletRequest request, Model model) {
+    public String post(@PathVariable Long postId, HttpServletRequest request, Model model) {
         Post findPost = postService.findPostById(postId);
         Boolean isAuthor = postService.isAuthor(findPost, request);
         model.addAttribute("isAuthor", isAuthor);
@@ -50,7 +50,7 @@ public class PostController {
     }
 
     @GetMapping("/addPost")
-    public String addPost(HttpServletRequest request,Model model) {
+    public String addPost(HttpServletRequest request, Model model) {
         PostDto post = new PostDto(postService.getMemberFromSession(request).getNickName());
 
         model.addAttribute("post", post);
@@ -67,10 +67,11 @@ public class PostController {
     }
 
     @GetMapping("/{postId}/edit")
-    public String edit(@PathVariable Long postId,Model model) {
+    public String edit(@PathVariable Long postId, Model model) {
         Post findPost = postService.findPostById(postId);
         PostDto dto = new PostDto(findPost.getMember().getNickName(), findPost.getTitle(), findPost.getContent());
         model.addAttribute("post", dto);
+        model.addAttribute("postId", postId);
         return "board/edit";
     }
 
@@ -85,7 +86,9 @@ public class PostController {
         return "redirect:/board/{postId}";
     }
 
-    //삭제 메서드 구현해야함
-
-
+    @GetMapping("/{postId}/delete")
+    public String delete(@PathVariable Long postId) {
+        postService.deletePost(postId);
+        return "board/delete";
+    }
 }

@@ -42,13 +42,14 @@ public class MemberService {
         return memberRepository.update(memberId, updateParam);
     }
 
+    public void deleteMember(Long id) {
+        memberRepository.delete(id);
+    }
+
     public Member loginViaSession(HttpServletRequest request,Member member) {
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER, member);
         return (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
     }
 
-    public Member testSave(Member member) {
-        return memberRepository.initSave(member);
-    }
 }

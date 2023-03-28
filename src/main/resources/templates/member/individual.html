@@ -46,6 +46,23 @@
             <br>
 
             <h3>내가 쓴 게시물</h3>
+
+            <button class="btn btn-info" type="button"
+                    th:onclick="|location.href='@{/member/individual/{memberId}/edit (memberId=*{memberId})}'|">
+                회원내용 수정하기
+            </button>
+
+            <button class="btn btn-info" type="button"
+                    th:onclick="|location.href='@{/member/individual/{memberId}/delete (memberId=*{memberId})}'|">
+                회원탈퇴
+            </button>
+
+            <button class="btn btn-info" type="button"
+                    onclick="location.href='index.html'"
+                    th:onclick="|location.href='@{/}'|">
+                메인으로
+            </button>
+
             <table class="table col-md-6">
                 <thead>
                 <tr>
@@ -69,17 +86,6 @@
                 </tr>
                 </tbody>
             </table>
-            <button class="btn btn-info" type="button"
-                    th:onclick="|location.href='@{/member/individual/{memberId}/edit (memberId=*{memberId})}'|">
-                회원내용 수정하기
-            </button>
-
-            <button class="btn btn-info" type="button"
-                    onclick="location.href='index.html'"
-                    th:onclick="|location.href='@{/}'|">
-                메인으로
-            </button>
-
         </div>
     </form>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

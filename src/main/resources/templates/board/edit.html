@@ -39,6 +39,10 @@
         </div>
 
         <button class="btn btn-primary offset-md-4" type="submit">수정완료</button>     <!--리터럴 대체-->
+
+        <button class="btn btn-primary " type="button" onclick="location.href='main.html'"
+                th:onclick="|location.href='@{/board/{postId}/delete (postId=${postId})}'|">게시글 삭제</button>
+
         <button class="btn btn-primary " type="button" onclick="location.href='main.html'"
                 th:onclick="|location.href='@{/board/main/1}'|">목록으로</button>
     </form>
