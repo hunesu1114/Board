@@ -61,4 +61,9 @@ public class MemberRepositoryImpl implements MemberRepository {
         Member member = em.find(Member.class, id);
         em.remove(member);
     }
+
+    @Override
+    public void initSave(Member member) {
+        em.persist(member);
+    }
 }

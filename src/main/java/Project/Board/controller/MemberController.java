@@ -29,7 +29,7 @@ public class MemberController {
 
     @GetMapping("/register")
     public String register(Model model) {
-        MemberDto memberDto = new MemberDto("aaa","aaa","aaa");
+        MemberDto memberDto = new MemberDto();
         model.addAttribute("member", memberDto);
         return "member/register";
     }
@@ -55,7 +55,7 @@ public class MemberController {
         log.info("================================");
 
         redirectAttributes.addAttribute("memberId", registerMember.getMemberId());
-//        redirectAttributes.addAttribute("registerStatus", true);
+        redirectAttributes.addAttribute("registerStatus", true);
         return "redirect:/member/individual/{memberId}";
     }
 
@@ -88,6 +88,8 @@ public class MemberController {
 
         if (redirectURI == "/") {
             redirectAttributes.addAttribute("memberId", loginMember.getMemberId());
+            redirectAttributes.addAttribute("loginStatus", true);
+
             return "redirect:/member/individual/{memberId}";
         }
 

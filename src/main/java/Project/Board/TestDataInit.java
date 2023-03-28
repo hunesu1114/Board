@@ -2,6 +2,8 @@ package Project.Board;
 
 import Project.Board.dto.MemberDto;
 import Project.Board.dto.PostDto;
+import Project.Board.entity.Member;
+import Project.Board.entity.Post;
 import Project.Board.repository.MemberRepository;
 import Project.Board.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,10 +30,10 @@ public class TestDataInit {
     public void init() {
         log.info("실행=====================================================");
         for (int i = 1; i < 54; i++) {
-            MemberDto member = new MemberDto("member" + i, "email" + i, "pw" + i);
-            memberRepository.save(member);
-            PostDto post = new PostDto("작성자"+i, "제목" + i, "내용" + i);
-            postRepository.save(post);
+            Member member = new Member("member" + i, "email" + i, "pw" + i);
+            memberRepository.initSave(member);
+            Post post = new Post("제목"+i, "내용" + i, member);
+            postRepository.initSave(post);
         }
     }
 }

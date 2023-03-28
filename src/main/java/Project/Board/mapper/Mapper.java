@@ -4,13 +4,17 @@ import Project.Board.dto.MemberDto;
 import Project.Board.dto.PostDto;
 import Project.Board.entity.Member;
 import Project.Board.entity.Post;
+import Project.Board.login.session.SessionConst;
 import org.springframework.stereotype.Component;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Component
 public class Mapper {
 
-    public Post postDtoToEntity(PostDto dto) {
-        return new Post(dto.getAuthor(), dto.getTitle(), dto.getContent());
+    public Post postSave(PostDto dto,HttpServletRequest request) {
+        return new Post(dto.getTitle(), dto.getContent(),getMemberFromSession(request));
     }
 
     //더티체킹
@@ -29,5 +33,11 @@ public class Mapper {
         return new MemberDto(member.getNickName(), member.getMemberEmail(), member.getPassword());
 
     }
+
+    public Member getMemberFromSession(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        return (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
+    }
+
 
 }

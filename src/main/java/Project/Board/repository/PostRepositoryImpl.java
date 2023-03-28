@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Repository
@@ -19,8 +20,8 @@ public class PostRepositoryImpl implements PostRepository {
     private final Mapper mapper;
 
     @Override
-    public Post save(PostDto dto) {
-        Post post = mapper.postDtoToEntity(dto);
+    public Post save(PostDto dto, HttpServletRequest request) {
+        Post post = mapper.postSave(dto,request);
         em.persist(post);
         return post;
     }
@@ -54,5 +55,11 @@ public class PostRepositoryImpl implements PostRepository {
     public void delete(Long id) {
         Post post = em.find(Post.class, id);
         em.remove(post);
+    }
+
+    //initData용
+    @Override
+    public void initSave(Post post) {
+        em.persist(post);
     }
 }

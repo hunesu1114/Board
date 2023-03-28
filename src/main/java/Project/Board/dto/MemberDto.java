@@ -17,8 +17,8 @@ public class MemberDto {
     public MemberDto() {
     }
 
-    public MemberDto(String memberName, String memberEmail, String password) {
-        this.nickName = memberName;
+    public MemberDto(String nickName, String memberEmail, String password) {
+        this.nickName = nickName;
         this.memberEmail = memberEmail;
         this.password = password;
     }

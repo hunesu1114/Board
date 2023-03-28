@@ -21,8 +21,8 @@
     <h3 class="text-center">게시물 수정</h3>
     <form action="board/edit" th:action th:object="${post}" method="post">
         <div class="col-md-6 offset-md-2">
-            <label for="author">작성자: </label>
-            <input type="text" id="author" th:field="*{author}" readonly>
+            <label for="nickName">작성자: </label>
+            <input type="text" id="nickName" th:field="*{nickName}" readonly>
             <br>
             <label for="title">제목: </label>
             <textarea id="title" th:field="*{title}" th:errorclass="field-error" rows="1" cols="70"></textarea>

@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,8 +19,8 @@ public class Member {
     private String nickName;  //서비스 사용시 이용할 닉네임
     private String password;
 
-    /*@OneToMany(mappedBy = "member")
-    private List<Post> posts=new ArrayList<>();*/
+    @OneToMany(mappedBy = "member")
+    private List<Post> posts=new ArrayList<>();
 
     public Member() {
     }

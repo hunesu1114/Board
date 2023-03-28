@@ -7,6 +7,7 @@ import Project.Board.login.session.SessionConst;
 import Project.Board.pagination.Pagination;
 import Project.Board.pagination.PagingConst;
 import Project.Board.service.PostService;
+import com.sun.net.httpserver.HttpsServer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -40,31 +41,36 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public String post(@PathVariable Long postId, Model model) {
+    public String post(@PathVariable Long postId,HttpServletRequest request, Model model) {
         Post findPost = postService.findPostById(postId);
+        Boolean isAuthor = postService.isAuthor(findPost, request);
+        model.addAttribute("isAuthor", isAuthor);
         model.addAttribute("post", findPost);
         return "board/post";
     }
 
     @GetMapping("/addPost")
-    public String addPost(Model model) {
-        Post post = new Post();
+    public String addPost(HttpServletRequest request,Model model) {
+        PostDto post = new PostDto(postService.getMemberFromSession(request).getNickName());
+
         model.addAttribute("post", post);
         return "board/add";
     }
 
     @PostMapping("/addPost")
-    public String addPost(@ModelAttribute("post") PostDto dto, RedirectAttributes redirectAttributes) {
-        Post post = postService.savePost(dto);
+    public String addPost(@ModelAttribute("post") PostDto dto, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        Post post = postService.savePost(dto, request);
+
         redirectAttributes.addAttribute("postId", post.getPostId());
         redirectAttributes.addAttribute("status", true);
         return "redirect:/board/{postId}";
     }
 
     @GetMapping("/{postId}/edit")
-    public String edit(@PathVariable Long postId, Model model) {
+    public String edit(@PathVariable Long postId,Model model) {
         Post findPost = postService.findPostById(postId);
-        model.addAttribute("post", findPost);
+        PostDto dto = new PostDto(findPost.getMember().getNickName(), findPost.getTitle(), findPost.getContent());
+        model.addAttribute("post", dto);
         return "board/edit";
     }
 

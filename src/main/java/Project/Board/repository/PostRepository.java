@@ -4,11 +4,12 @@ import Project.Board.dto.PostDto;
 import Project.Board.entity.Post;
 import Project.Board.pagination.Pagination;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface PostRepository {
 
-    public Post save(PostDto dto);
+    public Post save(PostDto dto, HttpServletRequest request);
 
     public Post findById(Long id);
 
@@ -20,4 +21,5 @@ public interface PostRepository {
 
     public void delete(Long id);
 
+    public void initSave(Post post);
 }
