@@ -34,6 +34,13 @@
             <br>
 
             <button class="btn btn-primary " type="submit">로그인</button>
+
+            <button class="btn btn-info" type="button"
+                    onclick="location.href='index.html'"
+                    th:onclick="|location.href='@{/member/register}'|">
+                회원가입
+            </button>
+
             <button class="btn btn-info" type="button"
                     onclick="location.href='index.html'"
                     th:onclick="|location.href='@{/}'|">
