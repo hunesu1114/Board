@@ -74,9 +74,7 @@ public class MemberController {
                         HttpServletRequest request, @RequestParam(defaultValue = "/") String redirectURI,
                         RedirectAttributes redirectAttributes) {
 
-        Member loginMember = memberService.loginValidation(loginMemberDto.getMemberEmail(), loginMemberDto.getPassword());
-
-        if (loginMember == null) {
+        if (memberService.loginValidation(loginMemberDto.getMemberEmail(),loginMemberDto.getPassword())) {
             bindingResult.reject("loginFailure");
             log.info("========로그인 실패=========");
         }
@@ -84,6 +82,7 @@ public class MemberController {
             return "member/login";
         }
 
+        Member loginMember = memberService.findMemberByEmail(loginMemberDto.getMemberEmail());
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 
