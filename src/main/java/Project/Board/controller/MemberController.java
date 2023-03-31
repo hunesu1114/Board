@@ -36,6 +36,9 @@ public class MemberController {
     @PostMapping("/register")
     public String register(@Validated @ModelAttribute("member") MemberDto member, BindingResult bindingResult,
                            HttpServletRequest request, RedirectAttributes redirectAttributes) {
+
+
+
         if (bindingResult.hasErrors()) {
             log.info("========회원가입 오류========");
             return "member/register";
@@ -71,11 +74,16 @@ public class MemberController {
                         HttpServletRequest request, @RequestParam(defaultValue = "/") String redirectURI,
                         RedirectAttributes redirectAttributes) {
 
+        Member loginMember = memberService.loginValidation(loginMemberDto.getMemberEmail(), loginMemberDto.getPassword());
+
+        if (loginMember == null) {
+            bindingResult.reject("loginFailure");
+            log.info("========로그인 실패=========");
+        }
         if (bindingResult.hasErrors()) {
             return "member/login";
         }
 
-        Member loginMember = memberService.loginValidation(loginMemberDto.getMemberEmail(), loginMemberDto.getPassword());
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 

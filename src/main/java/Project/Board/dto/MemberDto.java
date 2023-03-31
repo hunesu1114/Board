@@ -3,6 +3,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter     //DTO에는 세터를 꼭 넣읍시다....
@@ -16,6 +18,9 @@ public class MemberDto {
 
     @NotBlank
     private String password;
+
+    @NotBlank
+    private LocalDateTime createTime = LocalDateTime.now();
 
     public MemberDto() {
     }

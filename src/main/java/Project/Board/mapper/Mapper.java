@@ -14,12 +14,11 @@ import javax.servlet.http.HttpSession;
 public class Mapper {
 
     public Post postSave(PostDto dto,HttpServletRequest request) {
-        return new Post(dto.getTitle(), dto.getContent(),getMemberFromSession(request));
+        return new Post(dto.getTitle(), dto.getContent(),dto.getCreateTime(),getMemberFromSession(request));
     }
 
     //더티체킹
     public Post postUpdate(Post post, PostDto updateParam) {
-        //postId와 member는 바뀌지 않음
         post.setTitle(updateParam.getTitle());
         post.setContent(updateParam.getContent());
         return post;

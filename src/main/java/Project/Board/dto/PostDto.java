@@ -2,8 +2,10 @@ package Project.Board.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.bytebuddy.asm.Advice;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -17,6 +19,9 @@ public class PostDto {
 
     @NotBlank
     private String content;
+
+    @NotBlank
+    private LocalDateTime createTime = LocalDateTime.now();
 
     public PostDto() {
     }

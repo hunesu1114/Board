@@ -15,7 +15,7 @@ public class Post {
     private Long postId;
     private String title;
     private String content;
-//    private LocalDateTime localDateTime;  //작성일자 추가하기
+    private LocalDateTime createTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")
@@ -24,9 +24,10 @@ public class Post {
     public Post() {
     }
 
-    public Post( String title, String content, Member member) {
+    public Post(String title, String content, LocalDateTime createTime, Member member) {
         this.title = title;
         this.content = content;
+        this.createTime = createTime;
         this.member = member;
     }
 }

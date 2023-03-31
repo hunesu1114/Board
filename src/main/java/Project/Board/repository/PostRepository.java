@@ -13,7 +13,9 @@ public interface PostRepository {
 
     public Post findById(Long id);
 
-    public List<Post> pagedFindAll(int page);
+//    public List<Post> pagedFindAll(int page);
+
+    public List<Post> search(String keyword);
 
     public int postCnt();
 

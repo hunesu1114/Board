@@ -6,6 +6,7 @@ import Project.Board.mapper.Mapper;
 import Project.Board.pagination.Pagination;
 import Project.Board.pagination.PagingConst;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -32,11 +33,19 @@ public class PostRepositoryImpl implements PostRepository {
         return findPost;
     }
 
-    @Override
+    /*@Override
+    //페이징 구버전
     public List<Post> pagedFindAll(int page) {
         return em.createQuery("select p from Post p order by p.postId desc", Post.class)
                 .setFirstResult(PagingConst.POST_CNT_PER_PAGE*(page-1))
                 .setMaxResults(PagingConst.POST_CNT_PER_PAGE)
+                .getResultList();
+    }*/
+
+    @Override
+    public List<Post> search(String keyword) {
+        return em.createQuery("select p from Post p where p.title like %:keyword% or p.content like %:keyword%",Post.class)
+                .setParameter("keyword", keyword)
                 .getResultList();
     }
 

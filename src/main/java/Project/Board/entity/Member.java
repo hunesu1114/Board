@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class Member {
     private String memberEmail;
     private String nickName;  //서비스 사용시 이용할 닉네임
     private String password;
+    private LocalDateTime createTime;
 
     @OneToMany(mappedBy = "member")
     private List<Post> posts=new ArrayList<>();

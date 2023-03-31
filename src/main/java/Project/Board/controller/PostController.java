@@ -10,6 +10,9 @@ import Project.Board.service.PostService;
 import com.sun.net.httpserver.HttpsServer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,13 +34,37 @@ public class PostController {
 
     @GetMapping("/main/{page}")
     public String mainPage(@PathVariable int page, Model model) {
+        Pageable pageable = PageRequest.of(page - 1, PagingConst.POST_CNT_PER_PAGE, Sort.by("postId").descending());
+        List<Post> posts = postService.findAllByPage(pageable);
+
         Pagination pagination = new Pagination(postService.postCnt(), page);
-        List<Post> posts = postService.findAllPost(page);
 
         model.addAttribute("pagination", pagination);
         model.addAttribute("pagesInCurrentBlock", pagination.pagesInCurrentBlock());
         model.addAttribute("posts", posts);
+        model.addAttribute("keyword", new String());
         return "/board/main";
+    }
+
+    @PostMapping("/main/{page}")
+    public String mainPage(@ModelAttribute("keyword") String keyword, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addAttribute("search", keyword);
+        return "redirect:/board/searchMain";
+    }
+
+    @GetMapping("/searchMain")
+    public String searchMain(@RequestParam("search") String keyword, Model model) {
+        List<Post> rs = postService.searchPost(keyword);
+
+        model.addAttribute("posts", rs);
+        model.addAttribute("keyword", new String());
+        return "board/searchMain";
+    }
+
+    @PostMapping("/searchMain")
+    public String searchMain(@ModelAttribute("keyword") String keyword, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addAttribute("search", keyword);
+        return "redirect:/board/searchMain";
     }
 
     @GetMapping("/{postId}")

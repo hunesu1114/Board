@@ -16,18 +16,11 @@
 </head>
 <body>
 <div class="container">
-    <h3 class="text-center">마이페이지</h3>
-    <div>
-        <h4 class="text-center" th:if="${param.registerStatus}" th:text="회원가입 완료">회원가입 완료시 호출</h4>
-        <h4 class="text-center" th:if="${param.loginStatus}" th:text="로그인 성공">로그인 성공시 호출</h4>
-    </div>
+    <h3 class="text-center" style="margin-top:10%">회원정보 수정</h3>
     <form action="individual.html" th:action method="post" th:object="${member}">
         <div class="col-md-6 offset-md-2">
             <label for="memberEmail">이메일: </label>
             <input type="text" id="memberEmail" th:field="*{memberEmail}" th:errorclass="field-error" readonly> <!--readonly 는 submit 날릴수있음-->
-            <div class="field-error" th:errors="*{memberEmail}">
-                이메일 오류
-            </div>
             <br>
 
             <label for="nickName">닉네임: </label>

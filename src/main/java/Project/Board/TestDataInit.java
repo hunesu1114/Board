@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 
 @Slf4j
 @Component
@@ -32,7 +33,7 @@ public class TestDataInit {
         for (int i = 1; i < 54; i++) {
             Member member = new Member("email" + i, "nick" + i, "pw" + i);
             memberRepository.initSave(member);
-            Post post = new Post("제목"+i, "내용" + i, member);
+            Post post = new Post("제목"+i, "내용" + i, LocalDateTime.now(),member);
             postRepository.initSave(post);
         }
     }
