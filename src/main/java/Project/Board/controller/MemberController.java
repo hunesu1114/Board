@@ -38,7 +38,7 @@ public class MemberController {
                            HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
         if (!memberService.findMemberByEmail(member.getMemberEmail()).isEmpty()) {
-            bindingResult.rejectValue("memberEmail", "registerEmailFailure","이미 존재하는 이메일 입니다.");
+            bindingResult.rejectValue("memberEmail", "registerEmailFailure");
             return "member/register";
         }
 
@@ -78,14 +78,14 @@ public class MemberController {
 
 
         if (memberService.findMemberByEmail(dto.getMemberEmail()).isEmpty()) {
-            bindingResult.rejectValue("memberEmail","loginIdFailure","틀린 이메일 입니다.");
+            bindingResult.rejectValue("memberEmail","loginIdFailure");
             return "member/login";
         }
 
         Member loginMember = memberService.findMemberByEmail(dto.getMemberEmail()).get(0);
 
         if (!loginMember.getPassword().equals(dto.getPassword())) {
-            bindingResult.rejectValue("password","loginPwFailure","틀린 PW 입니다.");
+            bindingResult.rejectValue("password","loginPwFailure");
         }
         if (bindingResult.hasErrors()) {
             return "member/login";
