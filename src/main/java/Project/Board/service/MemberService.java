@@ -29,16 +29,7 @@ public class MemberService {
         return memberRepository.findById(memberId);
     }
 
-    public Boolean loginValidation(String memberEmail, String pw) {
-        Member loginMember = memberRepository.findByEmail(memberEmail);
-        if (loginMember!=null && loginMember.getPassword().equals(pw)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public Member findMemberByEmail(String email) {
+    public List<Member> findMemberByEmail(String email) {
         return memberRepository.findByEmail(email);
     }
 

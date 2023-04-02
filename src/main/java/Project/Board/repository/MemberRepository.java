@@ -10,7 +10,7 @@ public interface MemberRepository {
 
     public Member findById(Long id);
 
-    public Member findByEmail(String email);
+    public List<Member> findByEmail(String email);
 
     public List<Member> findAll();
 

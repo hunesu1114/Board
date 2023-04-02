@@ -37,10 +37,12 @@ public class MemberController {
     public String register(@Validated @ModelAttribute("member") MemberDto member, BindingResult bindingResult,
                            HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
-
+        if (!memberService.findMemberByEmail(member.getMemberEmail()).isEmpty()) {
+            bindingResult.rejectValue("memberEmail", "registerEmailFailure","이미 존재하는 이메일 입니다.");
+            return "member/register";
+        }
 
         if (bindingResult.hasErrors()) {
-            log.info("========회원가입 오류========");
             return "member/register";
         }
 
@@ -70,19 +72,25 @@ public class MemberController {
      * 멤버DTO로 하면 닉네임 바인딩 -> null -> 오류 생김
      * 멤버DTO쓸거면 @NotBlank 주석처리하면 되긴 함
      */
-    public String login(@Validated @ModelAttribute("member") LoginDto loginMemberDto, BindingResult bindingResult,
+    public String login(@Validated @ModelAttribute("member") LoginDto dto, BindingResult bindingResult,
                         HttpServletRequest request, @RequestParam(defaultValue = "/") String redirectURI,
                         RedirectAttributes redirectAttributes) {
 
-        if (memberService.loginValidation(loginMemberDto.getMemberEmail(),loginMemberDto.getPassword())) {
-            bindingResult.reject("loginFailure");
-            log.info("========로그인 실패=========");
+
+        if (memberService.findMemberByEmail(dto.getMemberEmail()).isEmpty()) {
+            bindingResult.rejectValue("memberEmail","loginIdFailure","틀린 이메일 입니다.");
+            return "member/login";
+        }
+
+        Member loginMember = memberService.findMemberByEmail(dto.getMemberEmail()).get(0);
+
+        if (!loginMember.getPassword().equals(dto.getPassword())) {
+            bindingResult.rejectValue("password","loginPwFailure","틀린 PW 입니다.");
         }
         if (bindingResult.hasErrors()) {
             return "member/login";
         }
 
-        Member loginMember = memberService.findMemberByEmail(loginMemberDto.getMemberEmail());
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 

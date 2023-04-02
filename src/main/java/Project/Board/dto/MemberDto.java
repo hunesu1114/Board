@@ -19,7 +19,6 @@ public class MemberDto {
     @NotBlank
     private String password;
 
-    @NotBlank
     private LocalDateTime createTime = LocalDateTime.now();
 
     public MemberDto() {

@@ -36,11 +36,10 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public Member findByEmail(String memberEmail) {
+    public List<Member> findByEmail(String memberEmail) {
         return em.createQuery("select m from Member m where m.memberEmail=:memberEmail", Member.class)
                 .setParameter("memberEmail", memberEmail)
-                .getResultList()
-                .get(0);
+                .getResultList();   //.get(0) 하면 IndexOutOfBoundsException터짐
     }
 
     @Override
