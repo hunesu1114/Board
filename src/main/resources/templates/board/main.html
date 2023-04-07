@@ -28,10 +28,10 @@
         <tbody>
         <tr scope="row" th:each="post : ${posts}">
 
-            <td><a href="post" th:href="@{/board/post/{id} (id=${post.postId})}"
+            <td><a href="post" th:href="@{/board/{id} (id=${post.postId})}"
                    th:text="${post.postId}">게시물id</a></td>
 
-            <td><a href="post" th:href="@{/board/post/{id} (id=${post.postId})}"
+            <td><a href="post" th:href="@{/board/{id} (id=${post.postId})}"
                    th:text="${post.title}">게시물 제목</a></td>
 
             <td th:text="${post.member.nickName}">작성자</td>

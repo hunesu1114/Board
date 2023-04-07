@@ -20,7 +20,6 @@ public class PostDto {
     @NotBlank
     private String content;
 
-    @NotBlank
     private LocalDateTime createTime = LocalDateTime.now();
 
     public PostDto() {
